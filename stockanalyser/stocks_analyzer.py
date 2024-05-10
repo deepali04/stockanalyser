@@ -27,7 +27,6 @@ def get_stock_data(tickers, start, end):
     data = {}
 
     for ticker in tickers:
-
         try:
             data[ticker] = yf.download(ticker, start=start, end=end)
             if data[ticker].empty:
@@ -57,31 +56,23 @@ def plot_compare_stocks(data):
     print("Plot should be displayed now...")
 
 
-
 #Function to calculate the moving average 
-# def moving_average_calculate(stock_data, window_size):
-#     if window_size <= 0:
-#         raise ValueError("Window size must be greater than 0.")
+def moving_average_calculate(stock_data, window_size):
+  if window_size <= 0:
+    raise ValueError("Window size must be greater than 0.")
 
-#     moving_average = stock_data['Adj Close'].rolling(window=window_size).mean()
-#     return moving_average
+  moving_average = stock_data['Adj Close'].rolling(window=window_size).mean()
+  return moving_average
 
-# #Function to analyze the trends
-# def analyze(stock_data):
-#     short_window = 50
-#     long_window = 200
+#Function to analyze the trends
+def analyze(stock_data,ticker):
+  short_window = 50
+  long_window = 200
+  stock_data=stock_data[ticker]
+  stock_data['Short_MA'] = moving_average_calculate(stock_data, short_window)
+  stock_data['Long_MA'] = moving_average_calculate(stock_data, long_window)
+  stock_data['Signal'] = np.where(stock_data['Short_MA'] > stock_data['Long_MA'], 1, 0)
+  stock_data['Position'] = stock_data['Signal'].diff()
+  return stock_data
 
-#     stock_data['Short_MA'] = moving_average_calculate(stock_data, short_window)
-#     stock_data['Long_MA'] = moving_average_calculate(stock_data, long_window)
-#     stock_data['Signal'] = np.where(stock_data['Short_MA'] > stock_data['Long_MA'], 1, 0)
-#     stock_data['Position'] = stock_data['Signal'].diff()
 
-#     return stock_data
-
-# #Function to plot the data
-# def plot_data(stock_data):
-#     stock_data['Adj Close'].plot(figsize=(12, 8), title='Stock Price')
-#     plt.xlabel('Date')
-#     plt.ylabel('Price ($)')
-#     plt.grid(True)
-#     plt.show()
