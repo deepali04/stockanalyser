@@ -52,7 +52,7 @@ def plot_compare_stocks(data):
                       yaxis_title='Adjusted Close Price',
                       legend_title='Ticker')
     
-    py_offline.plot(fig, filename='Stock_Comparison.html')
+    py_offline.plot(fig, filename='./output/Stock_Comparison.html')
     print("Plot should be displayed now...")
 
 
@@ -65,14 +65,26 @@ def moving_average_calculate(stock_data, window_size):
   return moving_average
 
 #Function to analyze the trends
-def analyze(stock_data,ticker):
+def analyze_trends(stock_data):
   short_window = 50
   long_window = 200
-  stock_data=stock_data[ticker]
   stock_data['Short_MA'] = moving_average_calculate(stock_data, short_window)
   stock_data['Long_MA'] = moving_average_calculate(stock_data, long_window)
   stock_data['Signal'] = np.where(stock_data['Short_MA'] > stock_data['Long_MA'], 1, 0)
   stock_data['Position'] = stock_data['Signal'].diff()
+  stock_data.dropna(inplace=True)
   return stock_data
 
+def plot_ma(ticker,stock_data):
+    
+    print("Starting to plot...")
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], mode='lines', name='Close Price'))
+    fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Short_MA'], mode='lines', name='Short Moving Average(50 days)', line=dict(color='red', width=1)))
+    fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data["Long_MA"], mode='lines', name ='Long Moving Average(200 days)',line=dict(color='green', width=1)))
+    fig.update_layout(title=f'Simple moving averages of {ticker}',
+                    xaxis_title='Date',
+                    yaxis_title='Price')
+    py_offline.plot(fig, filename=f'./output/{ticker}_Short_Long_Moving_Average.html')
+    print("Plot should be displayed now...")
 

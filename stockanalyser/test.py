@@ -1,5 +1,5 @@
-from stocks_analyzer import get_stock_data, plot_compare_stocks, analyze
-import datetime
+from stocks_analyzer import get_stock_data, plot_compare_stocks, analyze_trends, plot_ma
+import datetime, time, os
 
 def main():
     
@@ -8,14 +8,19 @@ def main():
     end = input("Enter end date (YYYY-MM-DD): ")
 
     try:
+         os.makedirs("./output")
+    except FileExistsError:
+        pass
+
+    try:
         tickers = [ticker.upper() for ticker in tickers]
         stock_data = get_stock_data(tickers, start, end)
         plot_compare_stocks(stock_data)
-        for ticket in tickers:
-            print(ticket.upper())
-            stock_data=get_stock_data([ticket],start,end)
-            print(analyze(stock_data,ticket))
-
+        for ticker, data in stock_data.items():
+            ma_data = analyze_trends(data)
+            time.sleep(2)
+            plot_ma(ticker, ma_data)
+    
     except ValueError as e:
         print(f"Validation error: {e}")
 
