@@ -6,4 +6,7 @@ To install the package, run the following steps in the CLI :
 2. python test.py
 
 Sample test case:
-Enter stock ticker symbols separated by comma (e.g., AAPL, MSFT, GOOGL) : AAPL, MSFT, GOOGL Enter start date (YYYY-MM-DD): 2023-01-01 Enter end date (YYYY-MM-DD): 2023-08-08
+
+1. Enter stock ticker symbols separated by comma (e.g., AAPL, MSFT, GOOGL) : AAPL, MSFT, GOOGL
+2. Enter start date (YYYY-MM-DD): 2023-01-01
+3. Enter end date (YYYY-MM-DD): 2023-08-08
