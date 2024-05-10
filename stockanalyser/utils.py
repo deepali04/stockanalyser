@@ -15,8 +15,6 @@ def validate_date_range(start, end):
     if end_date > datetime.datetime.now():
         raise ValueError("End date cannot be in the future.")
 
-import yfinance as yf
-
 def validate_tickers(tickers):
     invalid_tickers = []
     for ticker in tickers:
